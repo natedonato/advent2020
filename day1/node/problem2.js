@@ -1,5 +1,5 @@
 const fs = require('fs');
-const input = fs.readFileSync('day1/input.txt', "utf8").split('\n').map(el => parseInt(el));
+const input = fs.readFileSync('day1/node/input.txt', "utf8").split('\n').map(el => parseInt(el));
 
 input.forEach((num1, idx1) => {
     input.forEach((num2, idx2) => {
