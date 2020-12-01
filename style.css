@@ -1,0 +1,104 @@
+*{
+  box-sizing: border-box;
+}
+
+html{
+  min-height: 100%;
+}
+
+body{
+  position: relative;
+  padding: 10px;
+  min-height: 100%;
+  background: #71ecfc;
+  text-align: center;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #71ecfc 0%, #53cbf1 40%, #0775fc 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #71ecfc 0%, #53cbf1 40%, #0775fc 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #71ecfc 0%, #53cbf1 40%, #0775fc 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#71ecfc', endColorstr='#0775fc', GradientType=0);
+  /* IE6-9 */
+}
+
+.calendar{
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: url('./assets/dots.jpg');
+  background-repeat:no-repeat;
+  background-size:cover;
+  position: relative;
+  padding: 25px;
+  display: grid;
+  grid-gap: 2px 2px;
+  grid-template-columns: repeat(5, 1fr);
+  /* grid-template-rows: repeat(5, auto); */
+
+}
+
+.square{
+  position: relative;
+  background-color: rgb(206, 29, 29);
+  border: 1px solid black;
+  color: white;
+  background-repeat:no-repeat;
+  background-size:cover;
+}
+
+.square:nth-child(3n+1){
+  background: url('./assets/green.jpg');
+}
+
+.square:nth-child(3n+2) {
+  background: url('./assets/red.jpg');
+}
+
+.square:nth-child(4n+3) {
+  background: url('./assets/white.jpg');
+  color: red;
+}
+
+.square:nth-child(4n+4) {
+  background: url('./assets/mixed.jpg');
+}
+
+.square > .content{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
+  text-decoration: none;
+  color: inherit;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+@media only screen and (max-width: 600px) {
+  .square>.content {
+    font-size: 14px;
+  }
+  .calendar{
+    padding: 5px;
+  }
+
+}
+
+.square:after {
+  content: "";
+  display: block;
+  padding-bottom: 122%;
+}
+
+.square.upcoming{
+  cursor: not-allowed;
+  filter: grayscale(0.8);
+  /* background: lightgray; */
+  color: rgba(25,25,25,0.5)
+}

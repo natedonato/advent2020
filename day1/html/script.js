@@ -1,5 +1,19 @@
 document.getElementById('solve').onclick = solve;
 
+document.getElementById('reveal1').onclick = () => {
+  document.getElementById('reveal1').style.display='none';
+  document.getElementById('example1').style.display='block';
+}
+
+document.getElementById("reveal2").onclick = () => {
+  document.getElementById("reveal2").style.display = "none";
+  document.getElementById("example2").style.display = "block";
+};
+
+
+
+
+
 function solve(){
     const inputStr = document.getElementById('inputtext').value
     const output1 = document.getElementById('solution1');
