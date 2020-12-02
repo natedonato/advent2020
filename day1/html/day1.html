@@ -1,45 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@10.4.0/styles/default.min.css">
-    <script src="https://unpkg.com/@highlightjs/cdn-assets@10.4.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@10.4.0/styles/default.min.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@10.4.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
 
-    <title>Day 1</title>
+  <title>Day 1</title>
 </head>
-<body>
-    <h1> Advent of Code Day 1 Solver</h1>
-    <a href='https://adventofcode.com/2020/day/1'>Get your puzzle here</a>
-    <br />
-    <br />
-    <div class='inputContainer'>
-        Paste input here:
-        <br/>
-        <textarea id='inputtext'></textarea>
-        <br/>
-        <button id='solve'>Solve</button>
-    </div>
-    <br/>
-    <div class='outputContainer'>
-        <div>
-            Your answer for question part 1:
-            <span id='solution1'></span>
-        </div>
-        <div>
-            Your answer for question part 2:
-            <span id='solution2'></span>
-        </div>
-    </div>
 
+<body>
+  <h1> Advent of Code Day 1 Solver</h1>
+  <a href='https://adventofcode.com/2020/day/1'>Get your puzzle here</a>
+  <br />
+  <br />
+  <div class='inputContainer'>
+    Paste input here:
     <br />
+    <textarea id='inputtext'></textarea>
     <br />
+    <button id='solve'>Solve</button>
+  </div>
+  <br />
+  <div class='outputContainer'>
     <div>
-      Example solution for part 1 using Node.js :
-      <div id='reveal1' style='cursor: pointer'> <br />(Click to reveal) <br /></div>
-      <div style='display: none' id='example1'>
-        <pre style='white-space: pre-wrap'>
+      Your answer for question part 1:
+      <span id='solution1'></span>
+    </div>
+    <div>
+      Your answer for question part 2:
+      <span id='solution2'></span>
+    </div>
+  </div>
+
+  <br />
+  <br />
+  <div>
+    Example solution for part 1 using Node.js :
+    <div id='reveal1' style='cursor: pointer'> <br />(Click to reveal) <br /></div>
+    <div style='display: none' id='example1'>
+      <pre style='white-space: pre-wrap'>
 First we read our input from a text file, then we split our input string into a more workable form: an array of integers.  Next using a simple nested loop we can check each integer against every other integer, until we find the pair that sums to 2020, and finally we print the product of that pair to the console.
         <code class="javascript">const fs = require('fs');
 const input = fs.readFileSync('input.txt', "utf8").split('\n').map(el => parseInt(el));
@@ -52,14 +54,14 @@ input.forEach((num, idx) => {
   })
 })</code>
       </pre>
-      </div>
     </div>
-    <br />
-    <div>
-      Example solution for part 2 using Node.js :
-      <div style='cursor: pointer' id='reveal2'> <br />(Click to reveal)</div>
-      <div style='display: none' id='example2'>
-        <pre style='white-space: pre-wrap'>
+  </div>
+  <br />
+  <div>
+    Example solution for part 2 using Node.js :
+    <div style='cursor: pointer' id='reveal2'> <br />(Click to reveal)</div>
+    <div style='display: none' id='example2'>
+      <pre style='white-space: pre-wrap'>
 For part 2 we can use nearly the same strategy as the previous answer, but instead with another nested loop to add a third integer.
           <code class="javascript">const fs = require('fs');
 const input = fs.readFileSync('day1/node/input.txt', "utf8").split('\n').map(el => parseInt(el));
@@ -77,6 +79,7 @@ input.forEach((num1, idx1) => {
     </div>
   </div>
 
-    <script src='./script.js'></script>
+  <script src='./script.js'></script>
 </body>
+
 </html>

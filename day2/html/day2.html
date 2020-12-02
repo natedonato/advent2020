@@ -1,45 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@10.4.0/styles/default.min.css">
-    <script src="https://unpkg.com/@highlightjs/cdn-assets@10.4.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@10.4.0/styles/default.min.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@10.4.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
 
-    <title>Day 1</title>
+  <title>Day 2</title>
 </head>
-<body>
-    <h1> Advent of Code Day 2 Solver</h1>
-    <a href='https://adventofcode.com/2020/day/2'>Get your puzzle here</a>
-    <br />
-    <br />
-    <div class='inputContainer'>
-        Paste input here:
-        <br/>
-        <textarea id='inputtext'></textarea>
-        <br/>
-        <button id='solve'>Solve</button>
-    </div>
-    <br/>
-    <div class='outputContainer'>
-        <div>
-            Your answer for question part 1:
-            <span id='solution1'></span>
-        </div>
-        <div>
-            Your answer for question part 2:
-            <span id='solution2'></span>
-        </div>
-    </div>
 
+<body>
+  <h1> Advent of Code Day 2 Solver</h1>
+  <a href='https://adventofcode.com/2020/day/2'>Get your puzzle here</a>
+  <br />
+  <br />
+  <div class='inputContainer'>
+    Paste input here:
     <br />
+    <textarea id='inputtext'></textarea>
     <br />
+    <button id='solve'>Solve</button>
+  </div>
+  <br />
+  <div class='outputContainer'>
     <div>
-      Example solution for part 1 using Node.js :
-      <div id='reveal1' style='cursor: pointer'> <br />(Click to reveal) <br /></div>
-      <div style='display: none; max-width: 800px;' id='example1'>
-        <pre style='white-space: pre-wrap'>
+      Your answer for question part 1:
+      <span id='solution1'></span>
+    </div>
+    <div>
+      Your answer for question part 2:
+      <span id='solution2'></span>
+    </div>
+  </div>
+
+  <br />
+  <br />
+  <div>
+    Example solution for part 1 using Node.js :
+    <div id='reveal1' style='cursor: pointer'> <br />(Click to reveal) <br /></div>
+    <div style='display: none; max-width: 800px;' id='example1'>
+      <pre style='white-space: pre-wrap'>
 First we have to process our input and extract the useful info.  We split line by line to get each password on it's own and iterate through all our lines.  For each line we then use some string splitting and array destructuring to get the valuable information into properly named variables.  We want to extract the two integers (as lower and upper bounds), the main character we will be testing against, and the actuall password string each into their own named variables.
 
 Then we check through each character of the main password string, counting the number that match our test char.  If that count falls within our lower and upper bounds we have found a valid password and can add it to our numValid running total.
@@ -67,14 +69,14 @@ for(line of input){
 
 console.log(numValid);</code>
       </pre>
-      </div>
     </div>
-    <br />
-    <div>
-      Example solution for part 2 using Node.js :
-      <div style='cursor: pointer' id='reveal2'> <br />(Click to reveal)</div>
-      <div style='display: none; max-width: 800px;' id='example2'>
-        <pre style='white-space: pre-wrap'>
+  </div>
+  <br />
+  <div>
+    Example solution for part 2 using Node.js :
+    <div style='cursor: pointer' id='reveal2'> <br />(Click to reveal)</div>
+    <div style='display: none; max-width: 800px;' id='example2'>
+      <pre style='white-space: pre-wrap'>
 Again for part two we start with transforming our input and extracting the same relevant information.  This time we will check only specific indices within the password string (making sure to subtract one since an array's first index is zero!).  If at least one of the characters at those indices matches the target char, we check that the other doesn't also match, and then can add it to our tally of valid passwords satisfying the new password rules.
           <code class="javascript">const fs = require('fs');
 const input = fs.readFileSync('day2/node/input.txt', "utf8").split('\n').map(el => el.split(' '));
@@ -100,6 +102,7 @@ console.log(numValid);</code>
     </div>
   </div>
 
-    <script src='./script.js'></script>
+  <script src='./script.js'></script>
 </body>
+
 </html>
