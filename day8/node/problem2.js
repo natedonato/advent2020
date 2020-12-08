@@ -15,14 +15,14 @@ class Computer {
     let running = true;
     let result = false;
 
-    while(running){
+    while (running) {
       let currentLine = this.input[this.currentInstruction];
 
       if (this.currentInstruction === this.lastInstruction) {
         console.log("Final accumulator", this.accumulator);
         result = true;
         running = false;
-      } else{
+      } else {
         running = this.executeLine(currentLine);
       }
     }

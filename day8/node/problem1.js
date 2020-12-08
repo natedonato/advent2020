@@ -1,33 +1,33 @@
 const fs = require("fs");
 const input = fs.readFileSync("day8/node/input.txt", "utf8").split("\n");
 
-class Computer{
-  constructor(input){
+class Computer {
+  constructor(input) {
     this.accumulator = 0;
     this.currentInstruction = 0;
   }
 
-  runComputer(){
+  runComputer() {
     let currentLine = input[this.currentInstruction];
-    if(this.executeLine(currentLine) === true){
+    if (this.executeLine(currentLine) === true) {
       this.runComputer();
     }
   }
 
-  executeLine(line){
-    let [operation, argument] = line.split(' ');
-    input[this.currentInstruction] = 'X +0';
+  executeLine(line) {
+    let [operation, argument] = line.split(" ");
+    input[this.currentInstruction] = "X +0";
 
-    switch(operation){
-      case 'jmp':
+    switch (operation) {
+      case "jmp":
         this.currentInstruction += parseInt(argument);
-        break;  
-      case 'X':
-        console.log('Final accumulator',this.accumulator);
+        break;
+      case "X":
+        console.log("Final accumulator", this.accumulator);
         return false;
-      case 'acc':
+      case "acc":
         this.accumulator += parseInt(argument);
-      case 'nop':
+      case "nop":
       default:
         this.currentInstruction += 1;
     }
