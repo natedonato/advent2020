@@ -12,16 +12,21 @@ class Computer {
   }
 
   runComputer() {
-    let currentLine = this.input[this.currentInstruction];
+    let running = true;
+    let result = false;
 
-    if (this.currentInstruction === this.lastInstruction) {
-      console.log("Final accumulator", this.accumulator);
-      return true;
-    } else if (this.executeLine(currentLine) === true) {
-      this.runComputer();
-    } else {
-      return false;
+    while(running){
+      let currentLine = this.input[this.currentInstruction];
+
+      if (this.currentInstruction === this.lastInstruction) {
+        console.log("Final accumulator", this.accumulator);
+        result = true;
+        running = false;
+      } else{
+        running = this.executeLine(currentLine);
+      }
     }
+    return result;
   }
 
   executeLine(line) {
