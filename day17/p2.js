@@ -4,21 +4,26 @@ let input = fs
   .split("\r\n")
   .map((el) => el.split(""));
 
-let cube = [input];
 let hypercube = [[input]];
 
+function printHyperCube(hypercube) {
+  let wLength = hypercube.length;
 
-function printHyperCube(hypercube){
-  hypercube.forEach((cube, idx) =>{
-    console.log('\n\n')
-    console.log('w: ', idx);
-    console.log(cube);
-  })
+  hypercube.forEach((cube, idx) => {
+    console.log("\n\n");
+
+    cube.forEach((layer, idx2) => {
+      console.log(
+        "z=",
+        -Math.floor(wLength / 2) + idx2,
+        "w= ",
+        -Math.floor(wLength / 2) + idx
+      );
+
+      console.log(layer);
+    });
+  });
 }
-
-
-
-
 
 function newLayer(n) {
   let layer = [];
@@ -28,10 +33,10 @@ function newLayer(n) {
   return layer;
 }
 
-function newCube(z,n){
+function newCube(z, n) {
   let cube = [];
 
-  for(let i = 0; i < z; i++){
+  for (let i = 0; i < z; i++) {
     cube.push(newLayer(n));
   }
 
@@ -64,10 +69,10 @@ function expandCube(cube) {
   return newCube;
 }
 
-function expandHyperCube(hypercube){
+function expandHyperCube(hypercube) {
   let newHyperCube = [];
 
-  for(cube of hypercube){
+  for (cube of hypercube) {
     cube = expandCube(cube);
     cube = copyCube(cube);
     newHyperCube.push(cube);
@@ -76,7 +81,6 @@ function expandHyperCube(hypercube){
   let zLength = newHyperCube[0].length;
   let nLength = newHyperCube[0][0].length;
 
-  // make empty cubes
   newHyperCube.unshift(newCube(zLength, nLength));
   newHyperCube.push(newCube(zLength, nLength));
 
@@ -87,106 +91,100 @@ function copyCube(cube) {
   return JSON.parse(JSON.stringify(cube));
 }
 
-// //traverse full cube function
-// function iterateCube(cube, newCube) {
-//   let layerLength = cube.length;
-//   let rowLength = cube[0].length;
-//   let cubeBounds = [layerLength, rowLength];
+function iterateHyperCube(hypercube, newHyperCube) {
+  let wLength = hypercube.length;
+  let zLength = hypercube[0].length;
+  let rowLength = hypercube[0][0].length;
+  let hyperCubeBounds = [wLength, zLength, rowLength];
 
-//   for (let z = 0; z < layerLength; z++) {
-//     for (let y = 0; y < rowLength; y++) {
-//       for (let x = 0; x < rowLength; x++) {
-//         let el = cube[z][y][x];
-//         let neighborCount = countNeighbors(z, y, x, cubeBounds, cube);
+  for (let w = 0; w < wLength; w++) {
+    for (let z = 0; z < zLength; z++) {
+      for (let y = 0; y < rowLength; y++) {
+        for (let x = 0; x < rowLength; x++) {
+          let el = hypercube[w][z][y][x];
+          let neighborCount = countNeighbors(
+            w,
+            z,
+            y,
+            x,
+            hyperCubeBounds,
+            hypercube
+          );
 
-//         if (el === "#" && !(neighborCount === 2 || neighborCount === 3)) {
-//           newCube[z][y][x] = ".";
-//         } else if (el === "." && neighborCount === 3) {
-//           newCube[z][y][x] = "#";
-//         }
-//       }
-//     }
-//   }
-// }
+          if (el === "#" && !(neighborCount === 2 || neighborCount === 3)) {
+            newHyperCube[w][z][y][x] = ".";
+          } else if (el === "." && neighborCount === 3) {
+            newHyperCube[w][z][y][x] = "#";
+          }
+        }
+      }
+    }
+  }
+}
 
-// function countNeighbors(_z, _y, _x, cubeBounds, cube) {
-//   let zBounds = makeBound(_z, cubeBounds[0]);
-//   let yBounds = makeBound(_y, cubeBounds[1]);
-//   let xBounds = makeBound(_x, cubeBounds[1]);
-//   let count = 0;
+function countNeighbors(_w, _z, _y, _x, hyperCubeBounds, hypercube) {
+  let wBounds = makeBound(_w, hyperCubeBounds[0]);
+  let zBounds = makeBound(_z, hyperCubeBounds[1]);
+  let yBounds = makeBound(_y, hyperCubeBounds[2]);
+  let xBounds = makeBound(_x, hyperCubeBounds[2]);
+  let count = 0;
 
+  for (let w = wBounds[0]; w < wBounds[1]; w++) {
+    for (let z = zBounds[0]; z < zBounds[1]; z++) {
+      for (let y = yBounds[0]; y < yBounds[1]; y++) {
+        for (let x = xBounds[0]; x < xBounds[1]; x++) {
+          let el = hypercube[w][z][y][x];
 
+          if (el === "#" && !(w === _w && z === _z && y === _y && x === _x)) {
+            count += 1;
+          }
+        }
+      }
+    }
+  }
 
-//   // console.log('checking neighbors for ', _z, _y,_x)
-//   // console.log('bounds', zBounds, yBounds, xBounds)
+  return count;
+}
 
+function hyperCubeCount(hypercube) {
+  let count = 0;
 
+  let wLength = hypercube.length;
+  let zLength = hypercube[0].length;
+  let rowLength = hypercube[0][0].length;
 
-//   for(let z = zBounds[0]; z < zBounds[1]; z++){
-//     for(let y = yBounds[0]; y < yBounds[1]; y++){
-//       for(let x = xBounds[0]; x < xBounds[1]; x++){
-//         let el = cube[z][y][x];
-//         // console.log(z,y,x, el);
-//         if(el === '#' && !(z === _z && y === _y && x === _x)){
-//           count += 1;
-//         }
-//       }
-//     }
-//   }
+  for (let w = 0; w < wLength; w++) {
+    for (let z = 0; z < zLength; z++) {
+      for (let y = 0; y < rowLength; y++) {
+        for (let x = 0; x < rowLength; x++) {
+          let el = hypercube[w][z][y][x];
+          if (el === "#") {
+            count += 1;
+          }
+        }
+      }
+    }
+  }
+  return count;
+}
 
-//   return count;
-// }
+function makeBound(x, bound) {
+  let lowerBound = x - 1 < 0 ? 0 : x - 1;
+  let upperBound = x + 1 + 1 > bound ? bound : x + 1 + 1;
 
-// function makeBound(x, bound){
-//   let lowerBound = x-1 < 0 ? 0 : x-1;
-//   let upperBound = x+1+1 > bound ? bound : x+1+1;
+  return [lowerBound, upperBound];
+}
 
-//   return[lowerBound, upperBound];
-// }
+for (let i = 0; i < 6; i++) {
+  hypercube = expandHyperCube(hypercube);
 
+  newHyperCube = copyCube(hypercube);
 
-// function cubeCount(cube){
-//   let count = 0;
-  
-//   let layerLength = cube.length;
-//   let rowLength = cube[0].length;
+  iterateHyperCube(hypercube, newHyperCube);
 
-//   for (let z = 0; z < layerLength; z++) {
-//     for (let y = 0; y < rowLength; y++) {
-//       for (let x = 0; x < rowLength; x++) {
-//         let el = cube[z][y][x];
-//         if(el === '#'){
-//           count+=1;
-//         }
-//       }
-//     }
-//   }
-//   return count;
-// }
+  hypercube = newHyperCube;
 
+  // printHyperCube(hypercube);
+}
 
-
-// for(let i = 0; i < 6; i++){
-  
-//   cube = expandCube(cube);
-
-//   newCube = copyCube(cube);
-
-//   iterateCube(cube, newCube);
-
-//   console.log('\n\n');
-
-//   console.log(newCube);
-
-//   cube = newCube;
-
-// }
-
-// console.log(cubeCount(cube));
-
-
-
-printHyperCube(hypercube);
-
-
-printHyperCube(expandHyperCube(hypercube));
+console.log(hyperCubeCount(hypercube));
