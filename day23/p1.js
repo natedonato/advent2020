@@ -1,29 +1,51 @@
 const fs = require("fs");
-let input = fs.readFileSync("day23/input.txt", "utf8").split("\r\n");
+let cups = fs
+  .readFileSync("day23/input.txt", "utf8")
+  .split("")
+  .map((el) => parseInt(el));
+let current = 0;
 
-let deck1 = input.slice(1, 26).map((el) => parseInt(el));
-let deck2 = input.slice(28, 54).map((el) => parseInt(el));
+function move(cups) {
+  console.log("cups: ", cups.join(" "));
 
-while (deck1.length > 0 && deck2.length > 0) {
-  let c1 = deck1.shift();
-  let c2 = deck2.shift();
+  let currentVal = cups[current];
+  let pickup = [];
+  let target = current + 1;
 
-  // console.log("p1 plays", c1);
-  // console.log("p2 plays", c2);
-
-  if (c1 > c2) {
-    // console.log("p1 wins!")
-    deck1.push(c1, c2);
-  } else {
-    // console.log("p2 wins!")
-    deck2.push(c2, c1);
+  for (let i = 0; i < 3; i++) {
+    target %= cups.length;
+    pickup = [...pickup, ...cups.splice(target, 1)];
   }
+
+  console.log("pick up: ", pickup.join(" "));
+  let nextVal = currentVal;
+  let nextIdx = cups.indexOf(nextVal - 1);
+
+  while (nextIdx === -1) {
+    if (nextVal <= 0) {
+      nextVal = 9;
+    } else {
+      --nextVal;
+    }
+    nextIdx = cups.indexOf(nextVal);
+  }
+
+  console.log("destination: ", cups[nextIdx]);
+
+  cups.splice(nextIdx + 1, 0, ...pickup);
+  current = (cups.indexOf(currentVal) + 1) % cups.length;
 }
 
-let score = 0;
+for (let i = 0; i < 100; i++) {
+  console.log("-- move", i + 1);
+  move(cups);
+}
 
-deck1.reverse().forEach((card, idx) => {
-  score += card * (idx + 1);
-});
+let idx = cups.indexOf(1) + 1;
 
-console.log(score);
+let output = "";
+for (let i = 0; i < cups.length - 1; i++) {
+  output += cups[(idx + i) % cups.length];
+}
+
+console.log(output);

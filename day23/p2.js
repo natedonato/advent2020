@@ -1,55 +1,119 @@
 const fs = require("fs");
-let input = fs.readFileSync("day23/input.txt", "utf8").split("\r\n");
+let input = fs
+  .readFileSync("day23/input.txt", "utf8")
+  .split("")
+  .map((el) => parseInt(el));
 
-let deck1 = input.slice(1, 26).map((el) => parseInt(el));
-let deck2 = input.slice(28, 54).map((el) => parseInt(el));
+class Node {
+  constructor(val, next) {
+    this.val = val;
+    this.next = next ? next : null;
+  }
+}
 
-function recursiveCombat(_deck1, _deck2) {
-  let deck1 = [..._deck1];
-  let deck2 = [..._deck2];
+let map = {};
 
-  let seenPositons = {};
-
-  while (deck1.length > 0 && deck2.length > 0) {
-    let string = deck1.join("") + "," + deck2.join("");
-
-    if (seenPositons[string] === true) {
-      return [[1, 2], []];
-    } else {
-      seenPositons[string] = true;
-    }
-
-    let c1 = deck1.shift();
-    let c2 = deck2.shift();
-
-    if (deck1.length >= c1 && deck2.length >= c2) {
-      let outcome = recursiveCombat(deck1.slice(0, c1), deck2.slice(0, c2));
-      if (outcome[0].length > outcome[1].length) {
-        deck1.push(c1, c2);
-      } else {
-        deck2.push(c2, c1);
-      }
-    } else if (c1 > c2) {
-      deck1.push(c1, c2);
-    } else {
-      deck2.push(c2, c1);
-    }
+class LinkedList {
+  constructor(node) {
+    this.head = node;
+    this.tail = node;
+    this.pickedUpValues = [];
+    this.pickedUp = null;
+    this.length = 0;
   }
 
-  return [deck1, deck2];
+  add(node) {
+    if (!this.head) {
+      this.head = node;
+      this.tail = node;
+    } else {
+      this.tail.next = node;
+      this.tail = node;
+    }
+    this.length += 1;
+    map[this.tail.val] = this.tail;
+  }
+
+  pickup(node) {
+    this.pickedUp = node.next;
+    let current = node;
+    let values = [];
+
+    for (let i = 0; i < 3; i++) {
+      current = current.next;
+      this.pickedUpValues.push(current.val);
+    }
+
+    node.next = current.next;
+    current.next = null;
+
+    // console.log("pick up:", this.pickedUpValues);
+  }
+
+  return(node) {
+    let returnVal = node.val - 1;
+    if (returnVal === 0) {
+      returnVal = this.length;
+    }
+
+    while (this.pickedUpValues.includes(returnVal)) {
+      returnVal -= 1;
+      if (returnVal === 0) {
+        returnVal = this.length;
+      }
+    }
+
+    // console.log("destination:", returnVal);
+    let returnNode = map[returnVal];
+    let returnNext = returnNode.next;
+
+    returnNode.next = this.pickedUp;
+    while (this.pickedUp.next !== null) {
+      this.pickedUp = this.pickedUp.next;
+    }
+
+    this.pickedUp.next = returnNext;
+    this.pickedUp = null;
+    this.pickedUpValues = [];
+  }
 }
 
-let score = 0;
+const cups = new LinkedList();
 
-let [fdeck1, fdeck2] = recursiveCombat(deck1, deck2);
-
-let winner = fdeck2;
-if (fdeck1.length > fdeck2) {
-  winner = fdeck1;
+for (const cup of input) {
+  cups.add(new Node(cup));
 }
 
-winner.reverse().forEach((card, idx) => {
-  score += card * (idx + 1);
-});
+for (let i = Math.max(...input) + 1; i < 1000001; i++) {
+  cups.add(new Node(i));
+}
 
-console.log(score);
+cups.tail.next = cups.head;
+
+let pointer = cups.head;
+
+function move(pointer) {
+  cups.pickup(pointer);
+  cups.return(pointer);
+  // print(pointer);
+}
+
+function print(pointer) {
+  let tempPointer = pointer;
+  let str = "";
+  for (let i = 0; i < 10; i++) {
+    str += tempPointer.val + " ";
+    tempPointer = tempPointer.next;
+  }
+  console.log("\n");
+  console.log("cups", str);
+}
+
+for (let i = 0; i < 10000000; i++) {
+  move(pointer);
+  pointer = pointer.next;
+}
+
+pointer = map[1];
+
+console.log(pointer.next.val * pointer.next.next.val);
